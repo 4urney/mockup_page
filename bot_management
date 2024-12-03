@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Chatbot - RainbowBot</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+
+        /* Header */
+        header {
+      background-color: #002855;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+    }
+    header .logo img {
+      height: 50px;
+      margin-right: 15px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    header .add-button {
+      background-color: #0074cc;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    header .add-button:hover {
+      background-color: #005fa3;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: white; /* Set default (non-selected) tabs to white */
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  font-size: 16px;
+  color: black; /* Default text color for non-selected tabs */
+}
+
+.tab.active {
+  background-color: #002855; /* Purple for active tab */
+  color: white; /* White text for active tab */
+  border-color: #002855; /* Match border to active tab color */
+}
+/*back button*/
+
+    header .back-button {
+      background-color: #0074cc;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    header .back-button:hover {
+      background-color: #005fa3;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 0 0 10px 10px;
+      padding: 20px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #2e2a72;
+    }
+    .section label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 14px;
+      color: #4a4a4a;
+    }
+    .section input,
+    .section textarea,
+    .section select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .section button {
+      background-color: #0074cc;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    .section button:hover {
+      background-color: #d17bcb;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #002855;
+      color: white;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      background-color: #2e2a72;
+      color: white;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    
+      /* Chat Container */
+      .chat-container {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: white;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+    
+      /* Chat Box */
+      .chat-box {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+      }
+    
+      .message {
+        display: flex;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        max-width: 80%;
+      }
+    
+      .user-message {
+        align-self: flex-end;
+        background-color: #0074cc;
+        color: white;
+        justify-content: flex-end;
+      }
+    
+      .bot-message {
+        align-self: flex-start;
+        background-color: #f0f0f0;
+        color: black;
+        justify-content: flex-start;
+      }
+    
+      .message p {
+        margin: 0;
+        padding: 5px 10px;
+      }
+    
+      /* Chat Input */
+      .chat-input {
+        display: flex;
+        gap: 10px;
+      }
+    
+      .chat-input textarea {
+        flex-grow: 1;
+        resize: none;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+      }
+    
+      .chat-input textarea:focus {
+        border-color: #0074cc;
+        outline: none;
+      }
+    
+      .chat-input button {
+        background-color: #0074cc;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+    
+      .chat-input button:hover {
+        background-color: #005fa3;
+        transform: scale(1.05);
+      }
+    
+  </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center;">
+          <!-- Logo -->
+          <img src="https://d3uqcgc52rle7.cloudfront.net/_nuxt/4urneyLogo.BlmN_P6E.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+          <!-- Title -->
+          <h1>Manage Chatbot: RainbowBot</h1>
+        </div>
+        <button class="back-button">Back to Overview</button>
+      </header>
+      
+
+  <div class="container">
+    <nav>
+      <a href="https://d3uqcgc52rle7.cloudfront.net/?code=7b8e12e6-bbb3-40b0-9ad8-5663f0114523">Home</a> > <span>Chatbots Management</span>
+    </nav>  
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="general-settings">General Settings</div>
+      <div class="tab" data-tab="knowledge-base">Knowledge Base</div>
+      <div class="tab" data-tab="prompt-management">Prompt Management</div>
+      <div class="tab" data-tab="analytics">Analytics & Reports</div>
+      <div class="tab" data-tab="test-sandbox">Test Sandbox</div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-content active" id="general-settings">
+      <h2>General Settings</h2>
+      <div class="section">
+        <label for="chatbot-name">Chatbot Name</label>
+        <input type="text" id="chatbot-name" value="RainbowBot">
+        <label for="avatar">Avatar/Icon</label>
+        <input type="file" id="avatar">
+      </div>
+      <div class="section">
+        <h2>Channels</h2>
+        <button>Add Channel</button> 
+        <table>
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th>Status</th>
+              <th>Webhook URL</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LINE</td>
+              <td>Connected</td>
+              <td>https://example.webhook.url</td>
+              <td><button>Edit</button> <button>Remove</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-content" id="knowledge-base">
+        <h2>Data Source Management</h2>
+        <p>Manage the data sources your bot uses to access and respond to user queries. Add, edit, or remove data sources as needed.</p>
+      
+        <!-- Add New Data Source Section -->
+        <div class="section">
+          <h3>Add New Data Source</h3>
+          <label for="data-source-name">Data Source Name</label>
+          <input type="text" id="data-source-name" placeholder="Enter the name of the data source">
+      
+          <label for="data-source-type">Data Source Type</label>
+          <select id="data-source-type">
+            <option value="Database">Database</option>
+            <option value="API">API</option>
+            <option value="File">File (CSV, Excel)</option>
+          </select>
+      
+          <label for="data-source-url">Data Source URL/Path</label>
+          <input type="text" id="data-source-url" placeholder="Enter the URL or file path">
+      
+          <button id="add-data-source-button">Add Data Source</button>
+        </div>
+      
+        <!-- Data Source List Section -->
+        <div class="section">
+          <h3>Data Source List</h3>
+          <input type="text" id="search-data-source" placeholder="Search data sources..." onkeyup="filterDataSources()">
+          <table id="data-source-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>URL/Path</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>User Database</td>
+                <td>Database</td>
+                <td>mysql://userdb.example.com</td>
+                <td>
+                  <button class="edit-button">Edit</button>
+                  <button class="delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Product API</td>
+                <td>API</td>
+                <td>https://api.example.com/products</td>
+                <td>
+                  <button class="edit-button">Edit</button>
+                  <button class="delete-button">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <script>
+        // Add New Data Source
+        document.getElementById('add-data-source-button').addEventListener('click', function () {
+          const name = document.getElementById('data-source-name').value.trim();
+          const type = document.getElementById('data-source-type').value;
+          const url = document.getElementById('data-source-url').value.trim();
+      
+          if (!name || !url) {
+            alert('Please provide both a name and URL/path for the data source.');
+            return;
+          }
+      
+          const newRow = `
+            <tr>
+              <td>${name}</td>
+              <td>${type}</td>
+              <td>${url}</td>
+              <td>
+                <button class="edit-button">Edit</button>
+                <button class="delete-button">Delete</button>
+              </td>
+            </tr>
+          `;
+      
+          document.querySelector('#data-source-table tbody').insertAdjacentHTML('beforeend', newRow);
+      
+          // Clear inputs
+          document.getElementById('data-source-name').value = '';
+          document.getElementById('data-source-type').value = 'Database';
+          document.getElementById('data-source-url').value = '';
+        });
+      
+        // Edit and Delete Buttons
+        document.getElementById('data-source-table').addEventListener('click', function (e) {
+          if (e.target.classList.contains('delete-button')) {
+            e.target.closest('tr').remove();
+          } else if (e.target.classList.contains('edit-button')) {
+            const row = e.target.closest('tr');
+            const name = row.children[0].textContent;
+            const type = row.children[1].textContent;
+            const url = row.children[2].textContent;
+      
+            // Populate form fields
+            document.getElementById('data-source-name').value = name;
+            document.getElementById('data-source-type').value = type;
+            document.getElementById('data-source-url').value = url;
+      
+            // Remove the row being edited
+            row.remove();
+          }
+        });
+      
+        // Filter Data Sources
+        function filterDataSources() {
+          const search = document.getElementById('search-data-source').value.toLowerCase();
+          const rows = document.querySelectorAll('#data-source-table tbody tr');
+          rows.forEach(row => {
+            const name = row.children[0].textContent.toLowerCase();
+            const type = row.children[1].textContent.toLowerCase();
+            const url = row.children[2].textContent.toLowerCase();
+            row.style.display = name.includes(search) || type.includes(search) || url.includes(search) ? '' : 'none';
+          });
+        }
+      </script>
+      
+
+    <div class="tab-content" id="prompt-management">
+        <h2>Prompt Management</h2>
+        <p>Define the guidelines and instructions for the AI to create accurate and contextually relevant responses based on user needs or specific scenarios.</p>
+        
+        <!-- Add New Prompt Section -->
+        <div class="section">
+          <h3>Add New Prompt</h3>
+          <label for="prompt-name">Prompt Name</label>
+          <input type="text" id="prompt-name" placeholder="E.g., FAQ Handling">
+          
+          <label for="prompt-content">Prompt Instructions</label>
+          <textarea id="prompt-content" rows="5" placeholder="Provide detailed instructions or examples for the AI to follow."></textarea>
+          
+          <label for="prompt-example">Example Usage (Optional)</label>
+          <textarea id="prompt-example" rows="3" placeholder="E.g., 'How can I help you today?'"></textarea>
+          
+          <button id="add-prompt-button">Add Prompt</button>
+        </div>
+      
+        <!-- Prompt List Section -->
+        <div class="section">
+          <h3>Existing Prompts</h3>
+          <table id="prompt-table">
+            <thead>
+              <tr>
+                <th>Prompt Name</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Block Personal Questions</td>
+                <td>Block unauthorized or personal questions to ensure data privacy and security within the organization..</td>
+                <td>"Sorry, I cannot answer questions related to personal or confidential information. Please contact the relevant department for further assistance."</td>
+                <td>
+                  <button class="edit-button">Edit</button>
+                  <button class="delete-button">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>HR Inquiry Management</td>
+                <td>Handle common HR-related queries and block personal or unauthorized questions to maintain confidentiality and privacy.</td>
+                <td>"How can I apply for leave?."</td>
+                <td>
+                  <button class="edit-button">Edit</button>
+                  <button class="delete-button">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <script>
+        // Add functionality to the "Add Prompt" button
+        document.getElementById('add-prompt-button').addEventListener('click', function () {
+          // Get values from the input fields
+          const promptName = document.getElementById('prompt-name').value.trim();
+          const promptContent = document.getElementById('prompt-content').value.trim();
+          const promptExample = document.getElementById('prompt-example').value.trim();
+      
+          // Validate inputs
+          if (!promptName || !promptContent) {
+            alert('Please fill out the Prompt Name and Instructions.');
+            return;
+          }
+      
+          // Create a new table row
+          const newRow = `
+            <tr>
+              <td>${promptName}</td>
+              <td>${promptContent}</td>
+              <td>${promptExample}</td>
+              <td>
+                <button class="edit-button">Edit</button>
+                <button class="delete-button">Delete</button>
+              </td>
+            </tr>
+          `;
+      
+          // Append the new row to the table
+          document.querySelector('#prompt-table tbody').insertAdjacentHTML('beforeend', newRow);
+      
+          // Clear input fields
+          document.getElementById('prompt-name').value = '';
+          document.getElementById('prompt-content').value = '';
+          document.getElementById('prompt-example').value = '';
+        });
+      
+        // Add event delegation for Edit and Delete buttons
+        document.getElementById('prompt-table').addEventListener('click', function (e) {
+          if (e.target.classList.contains('delete-button')) {
+            // Delete the row
+            e.target.closest('tr').remove();
+          } else if (e.target.classList.contains('edit-button')) {
+            // Edit functionality (can be expanded)
+            alert('Edit functionality is under construction.');
+          }
+        });
+      </script>
+      
+
+    <div class="tab-content" id="analytics">
+      <h2>Analytics & Reports</h2>
+      <p>Total Messages: 500</p>
+      <p>Active Users: 150</p>
+      <p>Unanswered Messages: 10</p>
+    </div>
+
+    <!-- <div class="tab-content" id="test-sandbox">
+      <h2>Test Sandbox</h2>
+      <p>Simulate a conversation with RainbowBot:</p>
+      <textarea rows="5" placeholder="Type your message here..."></textarea>
+      <button>Send</button>
+    </div> -->
+    <div class="tab-content" id="test-sandbox">
+      <h2>Test Sandbox</h2>
+      <p>Simulate a conversation with RainbowBot:</p>
+      <div class="chat-container">
+        <!-- Chat Messages -->
+        <div class="chat-box">
+          <div class="message user-message">
+            <p>Hi RainbowBot!</p>
+          </div>
+          <div class="message bot-message">
+            <p>Hello! How can I assist you today?</p>
+          </div>
+        </div>
+    
+        <!-- Input Section -->
+        <div class="chat-input">
+          <textarea rows="2" placeholder="Type your message here..." id="chat-message"></textarea>
+          <button id="send-message">Send</button>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <script>
+      // Simulate Sending a Message
+      document.getElementById("send-message").addEventListener("click", () => {
+        const messageInput = document.getElementById("chat-message");
+        const messageText = messageInput.value.trim();
+        if (messageText) {
+          // Append User Message
+          const userMessage = document.createElement("div");
+          userMessage.className = "message user-message";
+          userMessage.innerHTML = `<p>${messageText}</p>`;
+          document.querySelector(".chat-box").appendChild(userMessage);
+    
+          // Simulate Bot Response
+          setTimeout(() => {
+            const botMessage = document.createElement("div");
+            botMessage.className = "message bot-message";
+            botMessage.innerHTML = "<p>Thank you for your message!</p>";
+            document.querySelector(".chat-box").appendChild(botMessage);
+    
+            // Scroll to Bottom
+            const chatBox = document.querySelector(".chat-box");
+            chatBox.scrollTop = chatBox.scrollHeight;
+          }, 1000);
+    
+          // Clear Input
+          messageInput.value = "";
+        }
+      });
+    </script>
+    
+  </div>
+
+  <footer>
+    © 2024 4Plus Consulting Co.,Ltd. All Rights Reserved.
+  </footer>
+
+  <script>
+    // Tab Switching
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs and contents
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
